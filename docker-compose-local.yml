@@ -1,7 +1,6 @@
-version: '3'
+version: "3"
 
 services:
-
   mysql:
     image: mysql:5.7
     container_name: mysql
@@ -27,7 +26,7 @@ services:
   spring:
     volumes:
       - ./src:/spring/src
-    command: ./gradlew bootRun
+    command: ./gradlew bootRun --continuous
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -45,6 +44,17 @@ services:
       - mysql
       - redis
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true # Hot Reload를 위한 파일 변경 감지
 volumes:
   mysql_data:
   redis_data:
