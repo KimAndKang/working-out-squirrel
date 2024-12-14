@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: wos
+
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: create
+
+  datasource:
+    url: jdbc:mysql://mysql:3306/wos?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: wos
+    password: wos
+
+  data:
+    redis:
+      host: redis
+      port: 6379
+      repositories:
+        enabled: false
