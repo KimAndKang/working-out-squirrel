@@ -24,14 +24,14 @@ services:
     volumes:
       - redis_data:/data
 
-  app:
+  spring:
     volumes:
-      - ./src:/app/src
+      - ./src:/spring/src
     command: ./gradlew bootRun
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: app
+    container_name: spring
     ports:
       - "8080:8080"
     environment:
@@ -40,7 +40,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: 1234
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
-      SPRING_REDIS_PASSWORD: crash
+      SPRING_REDIS_PASSWORD: 1234
     depends_on:
       - mysql
       - redis
