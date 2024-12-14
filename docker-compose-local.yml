@@ -24,14 +24,24 @@ services:
     volumes:
       - redis_data:/data
 
+<<<<<<< HEAD
   spring:
     volumes:
       - ./src:/spring/src
+=======
+  app:
+    volumes:
+      - ./src:/app/src
+>>>>>>> 809f902 (chore: initial backend setting)
     command: ./gradlew bootRun
     build:
       context: ./backend
       dockerfile: Dockerfile
+<<<<<<< HEAD
     container_name: spring
+=======
+    container_name: app
+>>>>>>> 809f902 (chore: initial backend setting)
     ports:
       - "8080:8080"
     environment:
@@ -40,7 +50,11 @@ services:
       SPRING_DATASOURCE_PASSWORD: 1234
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
+<<<<<<< HEAD
       SPRING_REDIS_PASSWORD: 1234
+=======
+      SPRING_REDIS_PASSWORD: crash
+>>>>>>> 809f902 (chore: initial backend setting)
     depends_on:
       - mysql
       - redis
