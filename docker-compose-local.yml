@@ -28,7 +28,7 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     volumes:
-      - ./src:/spring/src # 로컬 소스 코드가 컨테이너로 반영되도록 설정
+      - ./backend:/backend # 로컬 소스 코드가 컨테이너로 반영되도록 설정
     container_name: spring
     ports:
       - "8080:8080"
