@@ -12,17 +12,17 @@ function App() {
         </div>
         <div className='flex flex-col gap-4'>
           <SocialLoginButton
-            color='#F2F2F2'
+            bgColor='bg-[#F2F2F2]'
             logoUrl='/google-logo.svg'
             text='구글로 로그인하기'
           />
           <SocialLoginButton
-            color='#FFE812'
+            bgColor='bg-[#FFE812]'
             logoUrl='/kakao-logo.svg'
             text='카카오로 로그인하기'
           />
           <SocialLoginButton
-            color='#5AC351'
+            bgColor='bg-[#5AC351]'
             logoUrl='/naver-logo.jpg'
             text='네이버로 로그인하기'
           />
