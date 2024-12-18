@@ -1,8 +1,10 @@
 package com.kimandkang.workingoutsquirrel.common.exception;
 
+import org.springframework.http.HttpStatus;
+
 public interface ExceptionInfo {
 
-    Status status();
+    HttpStatus httpStatus();
 
     int exceptionCode();
 
