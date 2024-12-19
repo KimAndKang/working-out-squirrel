@@ -36,8 +36,33 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	// MySQL
 	runtimeOnly 'com.mysql:mysql-connector-j'
+	// Redis
+	implementation "org.springframework.boot:spring-boot-starter-data-redis"
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
+	// JWT
+	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+	implementation("io.jsonwebtoken:jjwt-jackson:0.11.5")
+	// Password Encoder
+	implementation 'org.springframework.security:spring-security-crypto'
+	// Spring DevTools
+	developmentOnly("org.springframework.boot:spring-boot-devtools")
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+task getDeps(type: Copy) {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	from configurations.compileClasspath into "libs/"
+	from configurations.runtimeClasspath into "libs/"
+}
+
+task buildAndReload {
+	dependsOn build
+	mustRunAfter build // buildAndReload must run after the source files are built into class files using build task
+	doLast {
+		new File(".", ".restart").text = "${System.currentTimeMillis()}" // update trigger file in root folder for hot reload
+	}
 }

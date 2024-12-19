@@ -15,17 +15,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleApplicationException(BaseException e) {
         log.warn(e.getMessage(), e);
         ExceptionInfo exceptionInfo = e.getExceptionInfo();
-        ExceptionStatus exceptionStatus = ExceptionStatus.from(exceptionInfo.status());
-
         return ResponseEntity
-                .status(exceptionStatus.getHttpStatus())
+                .status(e.getExceptionInfo().httpStatus())
                 .body(new ExceptionResponse(exceptionInfo.exceptionCode(), exceptionInfo.message()));
     }
 
     @ExceptionHandler
     public ResponseEntity<ExceptionResponse> handleNonApplicationException(Exception e) {
         log.error(e.getMessage(), e);
-
         return ResponseEntity
                 .status(INTERNAL_SERVER_ERROR)
                 .body(new ExceptionResponse(0000, e.getMessage()));

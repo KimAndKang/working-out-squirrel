@@ -9,7 +9,7 @@ spring:
         show_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
 
   datasource:
     url: jdbc:mysql://mysql:3306/wos?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
@@ -23,3 +23,11 @@ spring:
       port: 6379
       repositories:
         enabled: false
+
+  devtools:
+    restart:
+      enabled: true # restart 활성화
+      additional-paths: .
+      trigger-file: .restart # 트리거 파일로서 해당 파일이 수정되면 서버가 재시작된다
+    livereload:
+      enabled: true # livereload 활성화
