@@ -5,6 +5,7 @@ import static com.kimandkang.workingoutsquirrel.auth.exception.AuthExceptionInfo
 import static com.kimandkang.workingoutsquirrel.auth.exception.AuthExceptionInfo.MALFORMED_TOKEN;
 import static com.kimandkang.workingoutsquirrel.auth.exception.AuthExceptionInfo.SIGNATURE_NOT_FOUND;
 import static com.kimandkang.workingoutsquirrel.auth.exception.AuthExceptionInfo.UNSUPPORTED_TOKEN;
+import static io.jsonwebtoken.SignatureAlgorithm.HS256;
 
 import com.kimandkang.workingoutsquirrel.auth.exception.AuthException;
 import com.kimandkang.workingoutsquirrel.redis.domain.AccessToken;
@@ -14,7 +15,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
@@ -47,40 +47,30 @@ public class JwtProvider {
     }
 
     public AccessToken issueAccessToken(Long userId) {
-        Claims claims = Jwts.claims();
-        claims.put("userId", userId);
+        String claims = Jwts.builder()
+                .claim("userId", userId)
+                .setIssuedAt(issuedAt())
+                .setExpiration(accessTokenExpiration())
+                .signWith(key, HS256)
+                .compact();
         return AccessToken.builder()
-                .userId(String.valueOf(userId))
-                .claims(claimsForAccessToken(claims))
+                .userId(userId)
+                .claims(claims)
                 .build();
     }
 
     public RefreshToken issueRefreshToken(Long userId) {
-        Claims claims = Jwts.claims();
-        claims.put("userId", userId);
-        RefreshToken refreshToken = RefreshToken.builder()
-                .userId(String.valueOf(userId))
-                .claims(claimsForRefreshToken(claims))
-                .build();
-        return tokenService.saveRefreshToken(refreshToken);
-    }
-
-    private String claimsForAccessToken(Claims claims) {
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(issuedAt())
-                .setExpiration(accessTokenExpiration())
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-    }
-
-    private String claimsForRefreshToken(Claims claims) {
-        return Jwts.builder()
-                .setClaims(claims)
+        String claims = Jwts.builder()
+                .claim("userId", userId)
                 .setIssuedAt(issuedAt())
                 .setExpiration(refreshTokenExpiration())
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(key, HS256)
                 .compact();
+        RefreshToken refreshToken = RefreshToken.builder()
+                .userId(userId)
+                .claims(claims)
+                .build();
+        return tokenService.saveRefreshToken(refreshToken);
     }
 
     private Date issuedAt() {
@@ -104,14 +94,14 @@ public class JwtProvider {
                 .toInstant());
     }
 
-    public Long extractId(AccessToken accessToken) {
+    public Long extractId(String claimz) {
         try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(secret.getBytes())
                     .build()
-                    .parseClaimsJws(accessToken.getClaims())
+                    .parseClaimsJws(claimz)
                     .getBody();
-            return Long.parseLong(claims.get("userId", String.class));
+            return claims.get("userId", Long.class);
         } catch (ExpiredJwtException e) {
             throw new AuthException(EXPIRED_TOKEN);
         } catch (SecurityException e) {
