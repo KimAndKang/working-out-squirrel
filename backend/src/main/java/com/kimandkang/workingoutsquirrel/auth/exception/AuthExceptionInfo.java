@@ -12,6 +12,7 @@ public enum AuthExceptionInfo implements ExceptionInfo {
     EXPIRED_TOKEN(UNAUTHORIZED, 2002, "이미 만료된 토큰입니다. 다시 로그인 바랍니다."),
     UNSUPPORTED_TOKEN(UNAUTHORIZED, 2003, "지원되지 않는 토큰입니다."),
     ILLEGAL_ARGUMENT(UNAUTHORIZED, 2004, "토큰이 아닙니다."),
+    AUTHORIZATION_FAIL(UNAUTHORIZED, 2005, "인증에 실패했습니다."),
     ;
 
     private final HttpStatus httpStatus;
