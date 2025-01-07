@@ -9,3 +9,33 @@ server:
 spring:
   profiles:
     active: local
+
+jwt:
+  header: Authorization
+  secret: ${JWT_SECRET}
+  access-token-expiration: ${ACCESS_TOKEN_EXPIRATION}
+  refresh-token-expiration: ${REFRESH_TOKEN_EXPIRATION}
+
+oauth2:
+  provider:
+    google:
+      id: ${GOOGLE_ID}
+      secret: ${GOOGLE_SECRET}
+      token-url: https://oauth2.googleapis.com/token
+      info-url: https://www.googleapis.com/oauth2/v1/userinfo
+      login-url: https://accounts.google.com/o/oauth2/v2/auth
+      scope: https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/user.gender.read
+    kakao:
+      id: ${KAKAO_ID}
+      secret: ${KAKAO_SECRET}
+      token-url: https://kauth.kakao.com/oauth/token
+      info-url: https://kapi.kakao.com/v2/user/me
+      login-url: https://kauth.kakao.com/oauth/authorize
+      scope: profile_nickname profile_image account_email
+    naver:
+      id: ${NAVER_ID}
+      secret: ${NAVER_SECRET}
+      token-url: https://nid.naver.com/oauth2.0/token
+      info-url: https://openapi.naver.com/v1/nid/me
+      login-url: https://nid.naver.com/oauth2.0/authorize
+      scope: name,email,profile_image,gender

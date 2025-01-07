@@ -9,10 +9,10 @@ spring:
         show_sql: true
         dialect: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
 
   datasource:
-    url: jdbc:mysql://mysql:3306/wos?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://mysql:3306/wos?useUnicode=true&character_set_server=utf8mb4&serverTimezone=Asia/Seoul
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: wos
     password: wos
